@@ -1,0 +1,71 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+Listing
+{% endblock %}
+{% block body %}
+    <h2>Listing Details</h2>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if request.user != listing.author %}
+    <form action="{% url 'add_to_watchlist' listing.id  %}" method="post">
+        {% csrf_token %}
+        <input class="btn btn-primary" type="submit" value="Add/Remove Watchlist">
+    </form>
+    {% endif %}
+
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{ listing.image.url }}" class="card-img-top" alt="{{ listing.title }}">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ listing.title }}</h5>
+              <p class="card-text">{{ listing.description }}.</p>
+              <p class="card-text">$ {{ listing.price }} </p>
+              <p class="card-text">Username: {{ listing.author }} </p>
+              <p class="card-text"><small class="text-muted">{{ listing.category }}</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% for comments in show_comments %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <p class="card-text"><small class="text-muted">{{ comments.author }}</small></p>
+          <p class="card-text">{{ comments.message }}.</p>
+        </div>
+      </div>
+      {% endfor %}
+
+      <form action="{% url 'bid' listing.id  %}" method="post">
+        {% csrf_token %}
+        <input class="form-control" type="number" name="bid" placeholder="Bid for Listing" min="0">
+        <input class="btn btn-primary" type="submit" value="Submit Bid"> 
+    </form>
+     
+    {% if request.user == listing.author %}
+    <form action="{% url 'closeListing' listing.id  %}" method="post">
+        {% csrf_token %}
+        <input class="btn btn-danger" type="submit" value="Close Listing"> 
+    </form>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    {% if request.user != auction.author %}
+      <form action="{% url 'addComment' listing.id %}" method="post">
+        {% csrf_token %}
+        <textarea name="comment" rows="4" cols="50" maxlength="200" placeholder="Enter your comment (max 200 characters)"></textarea><br>
+        <input class="btn btn-primary" type="submit" value="Comment">
+      </form>
+    {% endif %}
+  {% endif %}
+
+  
+{% endblock %}

@@ -1,0 +1,14 @@
+body {
+    padding: 10px;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+}
+
+
+.card {
+    flex: 0 0 calc(33.33% - 20px); 
+}

@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+Watchlist 
+{% endblock %}
+
+{% block body %}
+    <h2>Your Watchlist </h2>
+
+    {% if inactive_message %}
+<div class="alert alert-warning" role="alert">
+    {{ inactive_message }}
+</div>
+{% endif %}
+
+    {% for listing in watchlist_items %}
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{ listing.image.url }}" class="card-img-top" alt="{{ auction.title }}">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ listing.title }}</h5>
+              <p class="card-text">{{ listing.description }}.</p>
+              <p class="card-text">$ {{ listing.price }} </p>
+              <p class="card-text">Username: {{ listing.author }} </p>
+              <p class="card-text"><small class="text-muted">{{ listing.category }}</small></p>
+              <a href="{% url 'listing' listing.id %}" class="btn btn-primary">Go to Listing</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    
+
+
+{% endblock %}

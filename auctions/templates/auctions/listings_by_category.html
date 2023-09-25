@@ -1,0 +1,20 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+Listings in {{ category_name }}
+{% endblock %}
+
+{% block body %}
+<h2>Listings in {{ category_name }}</h2>
+{% if listings %}
+  <ul class="list-group">
+    {% for listing in listings %}
+      <li class="list-group-item">
+        <a href="{% url 'listing' listing.id %}">{{ listing.title }}</a>
+        <span class="badge badge-primary badge-pill">$ {{ listing.price }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No active listings in this category.</p>
+{% endif %}
+{% endblock %}
